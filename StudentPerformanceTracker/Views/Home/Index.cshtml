@@ -1,0 +1,34 @@
+﻿@model StudentPerformanceTracker.Models.User
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to</h1>
+    <h1 class="display-4">Student Performance Tracker!</h1>
+    <p class="lead">
+        @if (Model != null)
+        {
+            <text>Hello, @Model.Username!</text>
+        }
+        else
+        {
+            <text>Hello, Explorer!</text>
+        }
+    </p>
+    <hr class="my-4" />
+    <p>
+        @if (Model != null)
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="Session" asp-action="ManageSessions">Manage Sessions</a>
+            <a class="btn btn-secondary btn-lg" asp-controller="Report" asp-action="WeeklyReport">Weekly Report</a>
+        }
+        else
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="User" asp-action="Login">Login</a>
+            <a class="btn btn-secondary btn-lg" asp-controller="User" asp-action="Register">Register</a>
+        }
+    </p>
+</div>
+

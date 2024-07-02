@@ -1,0 +1,33 @@
+﻿@model StudentPerformanceTracker.ViewModels.ReportViewModel
+
+@{
+    ViewData["Title"] = "Weekly Report";
+}
+
+<h2>Weekly Report</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Type</th>
+            <th>Recurrence</th>
+            <th>Predicted Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var session in Model.Sessions)
+        {
+            <tr>
+                <td>@session.Subject</td>
+                <td>@session.StartTime</td>
+                <td>@session.EndTime</td>
+                <td>@session.Type</td>
+                <td>@session.Recurrence</td>
+                <td>@Model.PredictedGrades[session.Subject]</td>
+            </tr>
+        }
+    </tbody>
+</table>

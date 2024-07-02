@@ -1,0 +1,38 @@
+﻿@model List<StudentPerformanceTracker.ViewModels.SessionViewModel>
+
+@{
+    ViewData["Title"] = "Manage Sessions";
+}
+
+<h2>Manage Sessions</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Type</th>
+            <th>Recurrence</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var session in Model)
+        {
+            <tr>
+                <td>@session.Subject</td>
+                <td>@session.StartTime</td>
+                <td>@session.EndTime</td>
+                <td>@session.Type</td>
+                <td>@session.Recurrence</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-controller="Session" asp-action="EditSession" asp-route-id="@session.SessionId">Edit</a>
+                    <a class="btn btn-sm btn-danger" asp-controller="Session" asp-action="DeleteSession" asp-route-id="@session.SessionId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-success" asp-controller="Session" asp-action="AddSession">Add New Session</a>
