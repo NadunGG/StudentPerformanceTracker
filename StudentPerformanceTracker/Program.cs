@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using StudentPerformanceTracker.Data;
 using StudentPerformanceTracker.Services;
 using StudentPerformanceTracker.Services.Interfaces;
@@ -9,7 +10,9 @@ builder.Services.AddControllersWithViews();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<DataContext>();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddSingleton<DataContext>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ISessionService, SessionService>();
 builder.Services.AddTransient<IReportService, ReportService>();
@@ -44,10 +47,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-    SeedData.Initialize(dataContext);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+//    SeedData.Initialize(dataContext);
+//}
 
 app.Run();

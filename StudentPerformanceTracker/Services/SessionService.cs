@@ -1,15 +1,18 @@
-﻿using StudentPerformanceTracker.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentPerformanceTracker.Data;
 using StudentPerformanceTracker.Models;
 using StudentPerformanceTracker.Services.Interfaces;
 using StudentPerformanceTracker.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StudentPerformanceTracker.Services
 {
     public class SessionService : ISessionService
     {
-        private readonly DataContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public SessionService(DataContext context)
+        public SessionService(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -18,7 +21,6 @@ namespace StudentPerformanceTracker.Services
         {
             var session = new Session
             {
-                SessionId = _context.Sessions.Count + 1,
                 UserId = model.UserId,
                 Subject = model.Subject,
                 StartTime = model.StartTime,
@@ -27,6 +29,7 @@ namespace StudentPerformanceTracker.Services
                 Recurrence = model.Recurrence
             };
             _context.Sessions.Add(session);
+            _context.SaveChanges();
         }
 
         public void UpdateSession(SessionViewModel model)
@@ -39,6 +42,7 @@ namespace StudentPerformanceTracker.Services
                 session.EndTime = model.EndTime;
                 session.Type = model.Type;
                 session.Recurrence = model.Recurrence;
+                _context.SaveChanges();
             }
         }
 
@@ -48,6 +52,7 @@ namespace StudentPerformanceTracker.Services
             if (session != null)
             {
                 _context.Sessions.Remove(session);
+                _context.SaveChanges();
             }
         }
 
@@ -84,5 +89,4 @@ namespace StudentPerformanceTracker.Services
             }).ToList();
         }
     }
-
 }

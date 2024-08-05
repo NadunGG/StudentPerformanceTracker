@@ -1,4 +1,5 @@
-﻿using StudentPerformanceTracker.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentPerformanceTracker.Data;
 using StudentPerformanceTracker.Models;
 using StudentPerformanceTracker.Services.Interfaces;
 using StudentPerformanceTracker.ViewModels;
@@ -8,10 +9,10 @@ namespace StudentPerformanceTracker.Services
 {
     public class UserService : IUserService
     {
-        private readonly DataContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(DataContext context, IHttpContextAccessor httpContextAccessor)
+        public UserService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
@@ -21,13 +22,13 @@ namespace StudentPerformanceTracker.Services
         {
             var user = new User
             {
-                UserId = _context.Users.Count + 1,
                 Username = model.Username,
                 Password = model.Password,
                 Email = model.Email,
                 ProfileInfo = model.ProfileInfo
             };
             _context.Users.Add(user);
+            _context.SaveChanges();
         }
 
         public User AuthenticateUser(string username, string password)
@@ -43,7 +44,7 @@ namespace StudentPerformanceTracker.Services
 
         public List<User> GetAllUsers()
         {
-            return _context.Users;
+            return _context.Users.ToList();
         }
 
         public User? GetLoggedInUser()
